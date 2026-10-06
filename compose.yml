@@ -1,0 +1,61 @@
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-minishop}
+      POSTGRES_USER: ${POSTGRES_USER:-minishop}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-minishop_dev}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - minishop_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "127.0.0.1:${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  rabbitmq:
+    image: rabbitmq:4-management-alpine
+    restart: unless-stopped
+    # RabbitMQ stores data per node name (derived from hostname).
+    # A fixed hostname keeps queues/messages across container recreation.
+    hostname: minishop-rabbit
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-minishop}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-minishop_dev}
+    ports:
+      - "127.0.0.1:${RABBITMQ_PORT:-5672}:5672" # AMQP (app connects here)
+      - "127.0.0.1:${RABBITMQ_UI_PORT:-15672}:15672" # Management UI
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  minishop_data:
+  redis_data:
+  rabbitmq_data:
