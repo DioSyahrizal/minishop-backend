@@ -9,14 +9,14 @@ One project that grows phase by phase. Each phase adds a backend concept and has
 | Concern            | Choice                                   |
 | ------------------ | ---------------------------------------- |
 | Language / runtime | TypeScript + Node.js                     |
-| Framework          | NestJS (or Fastify)                      |
-| Database           | PostgreSQL + Prisma/Drizzle (migrations) |
+| Framework          | NestJS                                   |
+| Database           | PostgreSQL + Drizzle (migrations)        |
 | Cache / jobs       | Redis + BullMQ                           |
 | Message broker     | RabbitMQ                                 |
 | Payments           | Stripe (test mode)                       |
 | Local infra        | Docker + Docker Compose                  |
 | Observability      | pino, OpenTelemetry, Jaeger, Prometheus, Grafana |
-| Testing / load     | Vitest/Jest, Supertest, k6               |
+| Testing / load     | Vitest, Supertest, k6                    |
 
 ## Timeline Overview
 
@@ -55,7 +55,7 @@ One project that grows phase by phase. Each phase adds a backend concept and has
 
 ### Resources
 - [ ] `users`: register, login, profile
-- [ ] `products`: CRUD (admin only for writes)
+- [ ] `products`: CRUD (admin only for writes) — CRUD done, admin-only pending auth
 - [ ] `orders`: create, list my orders, get order detail
 
 ### Auth
@@ -64,8 +64,8 @@ One project that grows phase by phase. Each phase adds a backend concept and has
 - [ ] Role-based access control (`admin`, `customer`)
 
 ### API quality
-- [ ] Request validation (zod or class-validator)
-- [ ] One consistent error response format
+- [x] Request validation (zod, schemas derived from Drizzle via `drizzle-orm/zod`)
+- [x] One consistent error response format
 - [ ] Correct HTTP status codes (201, 204, 400, 401, 403, 404, 409, 422)
 - [ ] Pagination: offset first, then cursor-based
 - [ ] Filtering and sorting on product list
@@ -75,9 +75,9 @@ One project that grows phase by phase. Each phase adds a backend concept and has
 Use each one at least once, on purpose, and write down the order they run in.
 - [ ] **Middleware:** request logging (method, path, status, duration)
 - [ ] **Guard:** JWT auth + `@Roles()` check
-- [ ] **Pipe:** zod validation pipe for bodies, params and queries
+- [ ] **Pipe:** zod validation pipe for bodies, params and queries — bodies done, queries pending (pagination/filtering)
 - [ ] **Interceptor:** response timing or response envelope
-- [ ] **Exception filter:** global filter that produces the consistent error format
+- [x] **Exception filter:** global filter that produces the consistent error format
 - [ ] **Custom decorator:** `@CurrentUser()` to read the authenticated user
 
 ### Testing
