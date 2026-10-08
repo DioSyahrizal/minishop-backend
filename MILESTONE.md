@@ -36,16 +36,16 @@ One project that grows phase by phase. Each phase adds a backend concept and has
 
 ## Phase 0 — Foundations (Week 1)
 
-**Goal:** A running API container talking to the infrastructure containers.
+**Goal:** The API running locally, talking to the infrastructure containers.
 
-- [ ] Install Docker and learn the basics of `docker compose`
-- [ ] `docker-compose.yml` with Postgres, Redis, RabbitMQ (with management UI)
-- [ ] Scaffold the NestJS project (TypeScript, ESLint, Prettier)
-- [ ] Env config with validation (`.env`, `.env.example`)
-- [ ] ORM setup + first migration
-- [ ] `GET /health` endpoint that checks DB connectivity
+- [x] Install Docker and learn the basics of `docker compose`
+- [x] `compose.yml` with Postgres, Redis, RabbitMQ (with management UI)
+- [x] Scaffold the NestJS project (TypeScript, oxlint, Prettier)
+- [x] Env config with validation (`.env`, `.env.example`)
+- [x] ORM setup + first migration
+- [x] `GET /health` endpoint that checks DB connectivity
 
-**Done when:** `docker compose up` starts everything and `GET /health` returns `200 OK`.
+**Done when:** `docker compose up -d` starts the infrastructure, `npm run start:dev` starts the API, and `GET /health` returns `200 OK` (and `503` when the DB is stopped).
 
 ---
 
@@ -70,6 +70,15 @@ One project that grows phase by phase. Each phase adds a backend concept and has
 - [ ] Pagination: offset first, then cursor-based
 - [ ] Filtering and sorting on product list
 - [ ] OpenAPI / Swagger docs
+
+### NestJS building blocks
+Use each one at least once, on purpose, and write down the order they run in.
+- [ ] **Middleware:** request logging (method, path, status, duration)
+- [ ] **Guard:** JWT auth + `@Roles()` check
+- [ ] **Pipe:** zod validation pipe for bodies, params and queries
+- [ ] **Interceptor:** response timing or response envelope
+- [ ] **Exception filter:** global filter that produces the consistent error format
+- [ ] **Custom decorator:** `@CurrentUser()` to read the authenticated user
 
 ### Testing
 - [ ] Unit tests for services/business logic
@@ -174,6 +183,7 @@ order.created → stock.reserved → payment.succeeded → order.confirmed
 - [ ] **Outbox pattern:** write to the DB and publish an event without losing either
 - [ ] **Saga pattern:** compensating actions when a later step fails
 - [ ] Decide sync (HTTP/gRPC) vs async (events), and write down why
+- [ ] Try `@nestjs/microservices` for RabbitMQ, compare it with plain `amqplib`, and note what the abstraction hides (exchanges, ack control, DLQ setup)
 
 **Done when:** you can kill `notification-service`, place orders, restart it, and it catches up with no lost messages.
 
@@ -200,9 +210,12 @@ order.created → stock.reserved → payment.succeeded → order.confirmed
 
 - [ ] API gateway / reverse proxy (nginx or Traefik)
 - [ ] Graceful shutdown: finish in-flight requests and messages before exit
+- [ ] Dockerfile for the API (multi-stage, non-root) + `api` service in compose
 - [ ] CI with GitHub Actions: lint, test, build Docker images
 - [ ] Deploy to Railway, Fly.io, or a VPS
 - [ ] Secrets management (no secrets in the repo)
+- [ ] Security basics: `helmet` headers, explicit CORS config, request body size limits
+- [ ] Dependency scanning in CI (`npm audit` or Snyk)
 - [ ] Load test with k6 and write down the first bottleneck
 
 **Done when:** it's deployed, CI is green, and you have a short write-up of the load test results.
@@ -212,6 +225,8 @@ order.created → stock.reserved → payment.succeeded → order.confirmed
 ## Stretch Goals
 
 - [ ] Real-time order status with WebSockets or Server-Sent Events (fed by RabbitMQ events)
+- [ ] OAuth login with GitHub or Google (Passport strategy), linked to existing accounts
+- [ ] Event sourcing for orders: rebuild order state from its event history
 - [ ] Build a small frontend client for your own API
 - [ ] Replace or compare RabbitMQ with Kafka
 - [ ] Full-text product search (Meilisearch)
