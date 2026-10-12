@@ -7,6 +7,11 @@ export const createProductSchema = createInsertSchema(products, {
   name: (s) => s.trim().min(1).max(200),
   priceCents: (s) => s.int().nonnegative(),
   stock: (s) => s.int().nonnegative(),
+  // http(s) only: blocks `javascript:` / `data:` URLs a frontend might render.
+  imageUrl: (s) => s.trim().pipe(z.url({ protocol: /^https?$/ }).max(2048)),
+  // Lowercased so "Kitchen" and "kitchen" filter as the same category.
+  category: (s) => s.trim().toLowerCase().min(1).max(100),
+  brand: (s) => s.trim().min(1).max(100),
 }).omit({ createdAt: true, updatedAt: true });
 
 export const updateProductSchema = createProductSchema

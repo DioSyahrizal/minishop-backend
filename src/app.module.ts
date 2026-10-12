@@ -6,9 +6,11 @@ import { HealthModule } from './health/health.module.js';
 import { ProductsModule } from './products/products.module.js';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter.js';
+import { UsersModule } from './users/users.module.js';
+import { AuthModule } from './auth/auth.module.js';
 
 @Module({
-  imports: [DbModule, HealthModule, ProductsModule],
+  imports: [DbModule, HealthModule, ProductsModule, UsersModule, AuthModule],
   controllers: [AppController],
   providers: [
     AppService,
