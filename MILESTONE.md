@@ -54,14 +54,14 @@ One project that grows phase by phase. Each phase adds a backend concept and has
 **Goal:** A well-built monolith API with auth and tests.
 
 ### Resources
-- [ ] `users`: register, login, profile
-- [ ] `products`: CRUD (admin only for writes) — CRUD done, admin-only pending auth
+- [x] `users`: register, login, profile (`GET /auth/me`)
+- [x] `products`: CRUD (admin only for writes)
 - [ ] `orders`: create, list my orders, get order detail
 
 ### Auth
-- [ ] Password hashing (argon2 or bcrypt)
-- [ ] JWT access token + refresh token flow
-- [ ] Role-based access control (`admin`, `customer`)
+- [x] Password hashing (argon2)
+- [ ] JWT access token + refresh token flow — access token done, refresh tokens pending
+- [x] Role-based access control (`admin`, `customer`) via `@Roles()` + `RolesGuard`
 
 ### API quality
 - [x] Request validation (zod, schemas derived from Drizzle via `drizzle-orm/zod`)
@@ -74,11 +74,11 @@ One project that grows phase by phase. Each phase adds a backend concept and has
 ### NestJS building blocks
 Use each one at least once, on purpose, and write down the order they run in.
 - [ ] **Middleware:** request logging (method, path, status, duration)
-- [ ] **Guard:** JWT auth + `@Roles()` check
+- [x] **Guard:** JWT auth + `@Roles()` check (global, opt out with `@Public()`)
 - [ ] **Pipe:** zod validation pipe for bodies, params and queries — bodies done, queries pending (pagination/filtering)
 - [ ] **Interceptor:** response timing or response envelope
 - [x] **Exception filter:** global filter that produces the consistent error format
-- [ ] **Custom decorator:** `@CurrentUser()` to read the authenticated user
+- [x] **Custom decorator:** `@CurrentUser()` to read the authenticated user
 
 ### Testing
 - [ ] Unit tests for services/business logic

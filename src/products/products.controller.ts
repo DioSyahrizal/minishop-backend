@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { ProductsService } from './products.service.js';
 import { Public } from '../auth/decorators/public.decorator.js';
+import { Roles } from '../auth/decorators/roles.decorator.js';
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe.js';
 import {
   createProductSchema,
@@ -23,6 +24,7 @@ import {
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
+  @Roles('admin')
   @Post()
   create(
     @Body(new ZodValidationPipe(createProductSchema))
@@ -43,6 +45,7 @@ export class ProductsController {
     return this.productsService.findOne(id);
   }
 
+  @Roles('admin')
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -52,6 +55,7 @@ export class ProductsController {
     return this.productsService.update(id, updateProductDto);
   }
 
+  @Roles('admin')
   @Delete(':id')
   @HttpCode(204)
   remove(@Param('id', ParseIntPipe) id: number) {

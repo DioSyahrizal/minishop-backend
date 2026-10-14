@@ -6,6 +6,7 @@ import { UsersModule } from '../users/users.module.js';
 import { JwtModule } from '@nestjs/jwt';
 import { env } from '../config/env.js';
 import { JwtAuthGuard } from './auth.guard.js';
+import { RolesGuard } from './roles.guard.js';
 
 @Module({
   imports: [
@@ -18,6 +19,13 @@ import { JwtAuthGuard } from './auth.guard.js';
   controllers: [AuthController],
   // APP_GUARD is global even when declared here; living in AuthModule gives it
   // access to JwtService.
-  providers: [AuthService, { provide: APP_GUARD, useClass: JwtAuthGuard }],
+  providers: [
+    AuthService,
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AuthModule {}
