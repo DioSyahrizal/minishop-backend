@@ -66,7 +66,7 @@ One project that grows phase by phase. Each phase adds a backend concept and has
 ### API quality
 - [x] Request validation (zod, schemas derived from Drizzle via `drizzle-orm/zod`)
 - [x] One consistent error response format
-- [ ] Correct HTTP status codes (201, 204, 400, 401, 403, 404, 409, 422)
+- [x] Correct HTTP status codes (201, 204, 400, 401, 403, 404, 409) — validation errors use 400 (Nest convention), not 422
 - [ ] Pagination: offset first, then cursor-based
 - [ ] Filtering and sorting on product list
 - [ ] OpenAPI / Swagger docs

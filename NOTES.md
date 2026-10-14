@@ -1,0 +1,6 @@
+- 400 instead of 422 for validation errors
+- secure by default: a global JwtAuthGuard with @Public() to opt out
+- @Roles() ignores @Public(), so the stricter rule wins
+- the register schema is written by hand, not generated from the users table
+- inserting directly and relying on the unique constraint, instead of checking first
+- access tokens carry sub and role only, with no personal data
