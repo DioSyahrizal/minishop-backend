@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service.js';
 import { UsersService } from '../users/users.service.js';
 import { JwtService } from '@nestjs/jwt';
+import { RefreshTokensService } from './refresh-tokens.service.js';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -12,6 +13,7 @@ describe('AuthService', () => {
         AuthService,
         { provide: UsersService, useValue: { create: vi.fn() } },
         { provide: JwtService, useValue: { signAsync: vi.fn() } },
+        { provide: RefreshTokensService, useValue: { issue: vi.fn() } },
       ],
     }).compile();
 

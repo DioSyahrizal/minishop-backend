@@ -13,6 +13,8 @@ const envSchema = z.object({
   JWT_ACCESS_SECRET: z.string().min(32),
   // Seconds. Coerced because every env value is a string.
   JWT_ACCESS_TTL: z.coerce.number().int().positive(),
+  // Seconds. Refresh tokens are opaque (not JWTs), so no secret is needed.
+  JWT_REFRESH_TTL: z.coerce.number().int().positive(),
 });
 
 export type Env = z.infer<typeof envSchema>;

@@ -60,7 +60,7 @@ One project that grows phase by phase. Each phase adds a backend concept and has
 
 ### Auth
 - [x] Password hashing (argon2)
-- [ ] JWT access token + refresh token flow — access token done, refresh tokens pending
+- [x] JWT access token + refresh token flow (rotating opaque refresh tokens, reuse detection, logout)
 - [x] Role-based access control (`admin`, `customer`) via `@Roles()` + `RolesGuard`
 
 ### API quality
@@ -130,6 +130,7 @@ Use each one at least once, on purpose, and write down the order they run in.
 - [ ] Retries with exponential backoff
 - [ ] Failed-job handling and inspection
 - [ ] Scheduled/delayed job: cancel unpaid orders after 30 minutes and release their stock
+- [ ] Scheduled job: delete expired refresh tokens (`refresh_tokens.expires_at < now()`)
 
 **Done when:** the checkout API responds fast, and the email still arrives even if the worker was down for a while.
 

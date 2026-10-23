@@ -9,6 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 import type { AuthenticatedRequest } from './auth.types.js';
 import { IS_PUBLIC_KEY } from './decorators/public.decorator.js';
 import type { AccessTokenPayload } from './dto/auth.dto.js';
+import { extractBearerToken } from './utils.auth.js';
 
 /**
  * Registered globally (APP_GUARD): every route requires a valid access token
@@ -53,11 +54,4 @@ export class JwtAuthGuard implements CanActivate {
     request.user = { id: Number(payload.sub), role: payload.role };
     return true;
   }
-}
-
-function extractBearerToken(request: AuthenticatedRequest): string | undefined {
-  const match = /^Bearer\s+(\S+)$/i.exec(
-    request.headers.authorization?.trim() ?? '',
-  );
-  return match?.[1];
 }

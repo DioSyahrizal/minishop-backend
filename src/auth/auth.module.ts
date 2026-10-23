@@ -7,6 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { env } from '../config/env.js';
 import { JwtAuthGuard } from './auth.guard.js';
 import { RolesGuard } from './roles.guard.js';
+import { RefreshTokensService } from './refresh-tokens.service.js';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { RolesGuard } from './roles.guard.js';
       provide: APP_GUARD,
       useClass: RolesGuard,
     },
+    RefreshTokensService,
   ],
 })
 export class AuthModule {}

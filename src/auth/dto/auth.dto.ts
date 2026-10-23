@@ -18,8 +18,15 @@ export const loginSchema = z.object({
   password: z.string().min(1).max(128),
 });
 
+// Opaque refresh token (base64url of 32 bytes = 43 chars). Sent in the body,
+// not the Authorization header, which is reserved for access tokens.
+export const refreshTokenSchema = z.object({
+  refreshToken: z.string().min(1).max(200),
+});
+
 export type RegisterDto = z.infer<typeof registerSchema>;
 export type LoginDto = z.infer<typeof loginSchema>;
+export type RefreshTokenDto = z.infer<typeof refreshTokenSchema>;
 
 export type AccessTokenPayload = {
   sub: string;
